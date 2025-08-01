@@ -63,22 +63,23 @@ const Header: React.FC = () => {
               ))}
             </nav>
 
-            {/* Right side items */}
-            <div className="flex items-center space-x-4">
-              {/* Search */}
-              <button className="p-2 text-gray-600 hover:text-green-600 transition-colors">
-                <Search size={20} />
-              </button>
+            {/* Right side items (visible on desktop only) */}
+<div className="hidden md:flex items-center space-x-4">
+  {/* Search */}
+  <button className="p-2 text-gray-600 hover:text-green-600 transition-colors">
+    <Search size={20} />
+  </button>
 
-              {/* Cart */}
-              <Link href="/cart" className="relative p-2 text-gray-600 hover:text-green-600 transition-colors">
-                <ShoppingCart size={20} />
-                {itemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {itemCount}
-                  </span>
-                )}
-              </Link>
+  {/* Cart */}
+  <Link href="/cart" className="relative p-2 text-gray-600 hover:text-green-600 transition-colors">
+    {itemCount > 0 && (
+      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+        {itemCount}
+      </span>
+    )}
+    <ShoppingCart size={20} />
+  </Link>
+
 
               {/* User Menu */}
               <div className="relative">
@@ -109,13 +110,42 @@ const Header: React.FC = () => {
                 )}
               </div>
 
-              {/* Mobile menu button */}
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden p-2 text-gray-600 hover:text-green-600 transition-colors"
-              >
-                {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-              </button>
+              {isMenuOpen && (
+  <div className="md:hidden bg-white border-t border-gray-200">
+    <div className="px-2 pt-2 pb-3 space-y-1">
+      {navigation.map((item) => (
+        <Link
+          key={item.name}
+          href={item.href}
+          onClick={() => setIsMenuOpen(false)}
+          className={`block px-3 py-2 text-base font-medium rounded-md transition-colors ${
+            pathname === item.href
+              ? 'text-green-600 bg-green-50'
+              : 'text-gray-700 hover:text-green-600 hover:bg-gray-100'
+          }`}
+        >
+          {item.name}
+        </Link>
+      ))}
+    </div>
+
+    {/* Mobile Search & Cart section */}
+    <div className="flex justify-around items-center px-4 py-2 border-t border-gray-100">
+      <button className="p-2 text-gray-600 hover:text-green-600 transition-colors">
+        <Search size={20} />
+      </button>
+      <Link href="/cart" className="relative p-2 text-gray-600 hover:text-green-600 transition-colors">
+        <ShoppingCart size={20} />
+        {itemCount > 0 && (
+          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+            {itemCount}
+          </span>
+        )}
+      </Link>
+    </div>
+  </div>
+)}
+
             </div>
           </div>
         </div>
